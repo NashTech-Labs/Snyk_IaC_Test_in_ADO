@@ -1,0 +1,12 @@
+trigger:
+- master
+
+pool: agent-local
+
+steps:
+
+- script: |
+    terraform init
+    terraform plan -out=tfplan
+    terraform show --json tfplan > tfplan.json
+- task: SnykSecurityScan@1
