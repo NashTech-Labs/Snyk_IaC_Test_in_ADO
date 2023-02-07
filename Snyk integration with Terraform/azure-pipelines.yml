@@ -1,12 +1,15 @@
 trigger:
 - master
 
-pool: agent-local
+pool: AG1-Pool
 
 steps:
 
 - script: |
+    npm install snyk -g
+    snyk -v
     terraform init
     terraform plan -out=tfplan
     terraform show --json tfplan > tfplan.json
-- task: SnykSecurityScan@1
+    snyk iac test tfplan.json --report
+    
